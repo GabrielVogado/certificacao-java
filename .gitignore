@@ -1,0 +1,16 @@
+# Java
+*.class
+
+# Maven
+target/
+
+# Saída da compilação dos trechos de análise (javac -d saida ...)
+saida/
+
+# IDEs
+.idea/
+*.iml
+.vscode/
+.classpath
+.project
+.settings/
