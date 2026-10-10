@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>br.com.certificacao</groupId>
+        <artifactId>certificacao-java</artifactId>
+        <version>1.0-SNAPSHOT</version>
+        <relativePath>../../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>m01-tipos-operadores-strings</artifactId>
+    <name>M01 - Tipos de dados, operadores, var, wrappers e Strings</name>
+
+    <properties>
+        <!-- Escopo da 1Z0-819: o compilador recusa APIs posteriores ao Java 11. -->
+        <maven.compiler.release>11</maven.compiler.release>
+    </properties>
+</project>
