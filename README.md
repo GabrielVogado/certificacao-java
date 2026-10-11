@@ -4,6 +4,11 @@ Treino técnico para a certificação **Oracle Java SE 11 Developer (1Z0-819)**,
 **Java SE 21 Developer (1Z0-830)** e as novidades até o **JDK 27**. O objetivo final é chegar ao **nível
 especialista** em 6 meses e preparar o caminho para engenharia e arquitetura de software.
 
+## Por onde começar
+
+1. Leia o [mapa mental](MAPA-MENTAL.md) (ou abra o `mapa-mental.html` no navegador) para ver tudo o que a prova cobra.
+2. Siga o [cronograma](CRONOGRAMA.md): a semana 1 é o módulo [M01](modulos/m01-tipos-operadores-strings/README.md).
+
 ## A regra de ouro
 
 > **O tutor (IA) nunca entrega respostas**: nem código de solução, nem alternativa correta, nem saída de
@@ -21,6 +26,8 @@ certificacao-java/
 ├── CLAUDE.md               ← regras do modo tutor (lidas pelo Claude Code)
 ├── .claude/skills/java-dev ← padrão de código usado nas correções
 ├── CRONOGRAMA.md           ← 26 semanas, fases, marcos e datas
+├── MAPA-MENTAL.md          ← mapa dos assuntos da prova (base Java 8) com perguntas-guia
+├── mapa-mental.html        ← versão interativa do mapa (abra no navegador)
 ├── AVALIACAO.md            ← como as notas são calculadas (padrão Oracle: 68%, sem crédito parcial)
 ├── PROGRESSO.md            ← painel de notas (o tutor atualiza)
 ├── CADERNO-DE-ERROS.md     ← suas regras escritas com suas palavras (só você escreve)

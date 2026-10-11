@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mapa mental Java</title>
+<style>
+:root {
+  --bg: #f7f7f5; --surface: #ffffff; --text: #1d1d1b; --muted: #6b6b66; --line: #e3e2dc;
+  --chip: #efeee9; --j8: #b45309; --j8-bg: #fdf0e1; --jnew: #1d5fb8; --jnew-bg: #e6effb;
+  --old: #5f5f5a; --old-bg: #ecebe6; --ok: #2f7d4a; --L: 42%; --S: 62%;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #161615; --surface: #20201e; --text: #ecebe6; --muted: #a3a29b; --line: #34332f;
+    --chip: #2a2a27; --j8: #f2a24b; --j8-bg: #3a2a16; --jnew: #7fb2f5; --jnew-bg: #1b2a3e;
+    --old: #b9b8b1; --old-bg: #2c2c29; --ok: #6cc28c; --L: 66%; --S: 60%;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #161615; --surface: #20201e; --text: #ecebe6; --muted: #a3a29b; --line: #34332f;
+  --chip: #2a2a27; --j8: #f2a24b; --j8-bg: #3a2a16; --jnew: #7fb2f5; --jnew-bg: #1b2a3e;
+  --old: #b9b8b1; --old-bg: #2c2c29; --ok: #6cc28c; --L: 66%; --S: 60%;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text);
+  font: 15px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+main { max-width: 1200px; margin: 0 auto; padding: 24px 16px 64px; }
+h1 { font-size: 1.6rem; margin: 0 0 4px; letter-spacing: -0.01em; }
+.sub { color: var(--muted); margin: 0 0 16px; max-width: 70ch; }
+.barra { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 12px 0 20px; }
+.chip { border: 1px solid var(--line); background: var(--surface); color: var(--text);
+  border-radius: 999px; padding: 6px 12px; font: inherit; font-size: .9rem; cursor: pointer; }
+.chip[aria-pressed="true"] { background: var(--text); color: var(--bg); border-color: var(--text); }
+.progresso { margin-left: auto; display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: .9rem; }
+.trilho { width: 140px; height: 8px; background: var(--chip); border-radius: 99px; overflow: hidden; }
+.trilho > i { display: block; height: 100%; width: 0; background: var(--ok); transition: width .3s; }
+.mapa { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 8px; margin-bottom: 24px; }
+.mapa svg { width: 100%; height: auto; display: block; }
+.mapa text { fill: var(--text); font-size: 13px; }
+.mapa .no { cursor: pointer; }
+.mapa .no:hover rect, .mapa .no:focus rect { stroke-width: 2.5; }
+.grade { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr)); gap: 16px; }
+.ramo { --cor: hsl(var(--h) var(--S) var(--L)); background: var(--surface); border: 1px solid var(--line);
+  border-top: 4px solid var(--cor); border-radius: 12px; padding: 14px 16px; scroll-margin-top: 16px; min-width: 0; }
+.ramo.destaque { box-shadow: 0 0 0 3px var(--cor); }
+.ramo h2 { font-size: 1.05rem; margin: 0; color: var(--cor); }
+.meta { color: var(--muted); font-size: .85rem; margin: 2px 0 10px; display: flex; justify-content: space-between; gap: 8px; }
+ul { list-style: none; margin: 0; padding: 0; }
+li { padding: 8px 0; border-top: 1px solid var(--line); }
+li:first-child { border-top: 0; }
+li[hidden] { display: none; }
+label { display: grid; grid-template-columns: 20px minmax(0, 1fr) auto; gap: 8px; align-items: start; cursor: pointer; }
+input[type="checkbox"] { margin: 3px 0 0; accent-color: var(--ok); width: 16px; height: 16px; }
+.q { grid-column: 2 / 4; color: var(--muted); font-size: .85rem; }
+.feito .t { text-decoration: line-through; text-decoration-color: var(--ok); color: var(--muted); }
+.t, .q { min-width: 0; overflow-wrap: anywhere; }
+code { overflow-wrap: anywhere; font: .85em ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; background: var(--chip); padding: 1px 4px; border-radius: 4px; }
+.v { font-size: .72rem; font-weight: 600; padding: 2px 7px; border-radius: 99px; white-space: nowrap; }
+.v8 { color: var(--j8); background: var(--j8-bg); }
+.vnew { color: var(--jnew); background: var(--jnew-bg); }
+.vold { color: var(--old); background: var(--old-bg); }
+.vazio { color: var(--muted); font-size: .85rem; font-style: italic; }
+footer { color: var(--muted); font-size: .85rem; margin-top: 32px; }
+@media (max-width: 560px) { .progresso { margin-left: 0; width: 100%; } .grade { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<main>
+  <h1>Mapa mental: Java na prova</h1>
+  <p class="sub">Assuntos da 1Z0-819 com o Java 8 como base. Cada tópico traz a versão em que apareceu e uma pergunta-guia
+    sem resposta. Marque o tópico só quando conseguir responder à pergunta sem consultar nada.</p>
+  <div class="barra" role="toolbar" aria-label="Filtrar por versão">
+    <button class="chip" data-f="todos" aria-pressed="true">Todos</button>
+    <button class="chip" data-f="8" aria-pressed="false">Novidades do Java 8</button>
+    <button class="chip" data-f="novo" aria-pressed="false">Java 9 a 11</button>
+    <button class="chip" data-f="base" aria-pressed="false">Java ≤ 7</button>
+    <div class="progresso"><span id="placar">0 de 0</span><div class="trilho"><i id="barra"></i></div></div>
+  </div>
+  <div class="mapa"><svg id="radial" viewBox="0 0 1000 560" role="img" aria-label="Mapa mental com 12 ramos"></svg></div>
+  <div class="grade" id="grade"></div>
+  <footer>Gerado a partir da mesma lista de tópicos do MAPA-MENTAL.md. O progresso fica salvo só neste navegador.</footer>
+</main>
+<script>
+const DADOS = [{"nome": "Fundamentos e tipos", "mod": "M01", "sem": "1", "topicos": [{"t": "Estrutura da classe, `main`, pacotes e imports", "v": "base", "q": "Que tipo de import vence quando dois imports curinga trazem classes de mesmo nome?"}, {"t": "Literais e identificadores", "v": "base", "q": "Em que posições o `_` é proibido dentro de um literal numérico?"}, {"t": "Primitivos, promoção numérica e casting", "v": "base", "q": "Qual é o tipo do resultado de `byte + byte`?"}, {"t": "Operadores, precedência e ordem de avaliação", "v": "base", "q": "Precedência e ordem de avaliação são a mesma coisa?"}, {"t": "Wrappers, autoboxing e cache", "v": "base", "q": "Quando `==` entre dois `Integer` dá `true`?"}, {"t": "String: imutabilidade, pool e API", "v": "base", "q": "Quando duas Strings concatenadas apontam para o mesmo objeto?"}, {"t": "StringBuilder", "v": "base", "q": "`StringBuilder` sobrescreve `equals`?"}, {"t": "`String.join` e `StringJoiner`", "v": "8", "q": "Como montar `[a, b, c]` com prefixo e sufixo sem laço manual?"}, {"t": "`var`: inferência de tipo local", "v": "10", "q": "Em quais lugares `var` é proibido?"}, {"t": "`var` em parâmetros de lambda", "v": "11", "q": "Dá para misturar `var` e tipo explícito nos parâmetros de uma lambda?"}, {"t": "`strip`, `isBlank`, `lines`, `repeat`", "v": "11", "q": "Qual é a diferença documentada entre `trim` e `strip`?"}, {"t": "Execução de arquivo-fonte único", "v": "11", "q": "Ao rodar `java Arquivo.java`, qual classe é executada?"}]}, {"nome": "Controle de fluxo e arrays", "mod": "M02", "sem": "2", "topicos": [{"t": "`if`/`else` e operador ternário", "v": "base", "q": "Qual é o tipo de um ternário com operandos `int` e `Integer`?"}, {"t": "`switch` clássico e fall-through", "v": "base", "q": "Quais tipos o `switch` aceita no Java 11?"}, {"t": "Laços: `for`, for-each, `while`, `do-while`", "v": "base", "q": "O corpo de um `do-while` com condição falsa executa?"}, {"t": "Labels, `break` e `continue`", "v": "base", "q": "Para onde salta um `continue` com label?"}, {"t": "Código inalcançável", "v": "base", "q": "`while (false) {...}` e `if (false) {...}` compilam?"}, {"t": "Arrays e arrays multidimensionais", "v": "base", "q": "O que `int[] a, b[];` declara?"}, {"t": "`Arrays.sort`, `binarySearch`, `asList`", "v": "base", "q": "O que `binarySearch` devolve num array não ordenado?"}, {"t": "`Arrays.compare` e `mismatch`", "v": "9", "q": "Qual é a diferença entre `equals`, `compare` e `mismatch`?"}]}, {"nome": "Orientação a objetos", "mod": "M03–M05", "sem": "3–5", "topicos": [{"t": "Construtores e ordem de inicialização", "v": "base", "q": "Em que ordem rodam blocos estáticos, blocos de instância e construtores?"}, {"t": "`static`, escopo e passagem por valor", "v": "base", "q": "Java passa objetos por referência?"}, {"t": "Encapsulamento e imutabilidade", "v": "base", "q": "O que falta para uma classe com campos `final` ser imutável?"}, {"t": "Ciclo de vida e garbage collection", "v": "base", "q": "Quando um objeto fica elegível para coleta?"}, {"t": "Sobrescrita, sobrecarga e ocultação", "v": "base", "q": "Métodos estáticos são sobrescritos ou ocultados?"}, {"t": "Classes abstratas, polimorfismo e casting", "v": "base", "q": "Quando um cast compila, mas lança `ClassCastException`?"}, {"t": "Interfaces: métodos `default` e `static`", "v": "8", "q": "O que acontece quando duas interfaces têm o mesmo método `default`?"}, {"t": "Interfaces funcionais e `@FunctionalInterface`", "v": "8", "q": "Um método `default` conta para a regra do método abstrato único?"}, {"t": "Interfaces: métodos `private`", "v": "9", "q": "Para que servem métodos `private` numa interface?"}, {"t": "Enums com construtor, campos e métodos", "v": "base", "q": "Um enum pode ter construtor público?"}, {"t": "Classes aninhadas: interna, estática, local, anônima", "v": "base", "q": "Uma classe local pode usar variável local que não é efetivamente final?"}, {"t": "`equals`, `hashCode` e `toString`", "v": "base", "q": "O que quebra ao sobrescrever `equals` sem `hashCode`?"}]}, {"nome": "Exceções", "mod": "M06", "sem": "6", "topicos": [{"t": "Hierarquia: checked, unchecked e `Error`", "v": "base", "q": "Uma `RuntimeException` precisa ser declarada no `throws`?"}, {"t": "`try`/`catch`/`finally`", "v": "base", "q": "Um `return` no `finally` faz o quê com uma exceção pendente?"}, {"t": "Multi-catch", "v": "base", "q": "`catch (IOException | Exception e)` compila?"}, {"t": "Try-with-resources e `AutoCloseable`", "v": "base", "q": "Em que ordem os recursos são fechados?"}, {"t": "Recurso efetivamente final no `try`", "v": "9", "q": "Dá para usar no `try (...)` uma variável declarada antes dele?"}, {"t": "Exceções suprimidas", "v": "base", "q": "Onde vai parar a exceção lançada pelo `close()`?"}, {"t": "Exceções customizadas e sobrescrita", "v": "base", "q": "Um método sobrescrito pode lançar uma checked mais ampla?"}]}, {"nome": "Generics e Collections", "mod": "M07–M08", "sem": "7–8", "topicos": [{"t": "Classes e métodos genéricos, operador diamante", "v": "base", "q": "Onde se declara o parâmetro de tipo de um método genérico?"}, {"t": "Curingas: `? extends` e `? super`", "v": "base", "q": "Dá para adicionar um `Integer` em `List<? extends Number>`?"}, {"t": "Type erasure", "v": "base", "q": "`new T()` compila? Por quê?"}, {"t": "`List`, `Set`, `Map`, `Queue`, `Deque`", "v": "base", "q": "Quais implementações não aceitam `null`?"}, {"t": "Métodos novos: `forEach`, `removeIf`, `computeIfAbsent`, `merge`", "v": "8", "q": "O que `merge` faz quando a função devolve `null`?"}, {"t": "`Comparable` e `Comparator`", "v": "base", "q": "Qual dos dois a própria classe implementa?"}, {"t": "`Comparator.comparing`, `thenComparing`, `reversed`", "v": "8", "q": "Em que trecho da cadeia o `reversed()` age?"}, {"t": "`List.of`, `Set.of`, `Map.of`", "v": "9", "q": "O que acontece ao chamar `add` numa lista criada com `List.of`?"}, {"t": "`copyOf` e `toUnmodifiableList`", "v": "10", "q": "`List.copyOf` sempre cria uma cópia?"}]}, {"nome": "Lambdas e interfaces funcionais", "mod": "M09", "sem": "9", "topicos": [{"t": "Sintaxe de lambda", "v": "8", "q": "Quando parênteses, chaves e `return` são opcionais?"}, {"t": "Escopo e variáveis efetivamente finais", "v": "8", "q": "Uma lambda pode alterar uma variável local do método?"}, {"t": "`Supplier`, `Consumer`, `Function`, `Predicate`", "v": "8", "q": "Qual delas tem `andThen` e qual tem `negate`?"}, {"t": "`UnaryOperator`, `BinaryOperator` e versões `Bi`", "v": "8", "q": "Qual é a relação entre `UnaryOperator` e `Function`?"}, {"t": "Especializações primitivas: `IntPredicate`, `ToIntFunction`...", "v": "8", "q": "Qual interface recebe `int` e devolve `boolean`?"}, {"t": "Method references (4 tipos)", "v": "8", "q": "Como `String::length` vira uma `Function<String, Integer>`?"}, {"t": "`Predicate.not`", "v": "11", "q": "Que problema de method reference o `Predicate.not` resolve?"}]}, {"nome": "Streams e Optional", "mod": "M10–M11", "sem": "10–11", "topicos": [{"t": "Pipeline: fonte, intermediárias e terminal", "v": "8", "q": "O que acontece num pipeline sem operação terminal?"}, {"t": "Avaliação preguiçosa e curto-circuito", "v": "8", "q": "Quantas vezes um `peek` imprime antes de um `findFirst`?"}, {"t": "`filter`, `map`, `flatMap`, `distinct`, `sorted`, `limit`", "v": "8", "q": "Qual é a diferença entre `map` e `flatMap`?"}, {"t": "`reduce`, `collect`, `count`, `min`, `max`", "v": "8", "q": "Que tipo `reduce` devolve com e sem valor identidade?"}, {"t": "Collectors: `toMap`, `joining`, `groupingBy`, `partitioningBy`", "v": "8", "q": "O que `toMap` faz com chaves duplicadas?"}, {"t": "Streams primitivos: `IntStream`, `sum`, `average`, `boxed`", "v": "8", "q": "Que tipo `IntStream.average()` devolve, e por quê?"}, {"t": "Streams paralelos", "v": "8", "q": "`forEach` num stream paralelo garante a ordem?"}, {"t": "Optional: `of`, `ofNullable`, `orElse`, `orElseGet`, `map`", "v": "8", "q": "Qual é a diferença entre `orElse` e `orElseGet`?"}, {"t": "`takeWhile`, `dropWhile`, `iterate` com predicado, `ofNullable`", "v": "9", "q": "`takeWhile` num stream não ordenado é determinístico?"}, {"t": "`Collectors.filtering` e `flatMapping`", "v": "9", "q": "Por que filtrar dentro do `groupingBy` muda o resultado?"}, {"t": "Optional: `ifPresentOrElse`, `or`, `stream`", "v": "9", "q": "O que `Optional.stream()` permite num pipeline?"}, {"t": "`Optional.orElseThrow()` sem argumento (10) e `isEmpty` (11)", "v": "11", "q": "Qual é a diferença entre `get()` e `orElseThrow()` sem argumento?"}]}, {"nome": "Date/Time e localização", "mod": "M12", "sem": "12", "topicos": [{"t": "`LocalDate`, `LocalTime`, `LocalDateTime`", "v": "8", "q": "Esses objetos são mutáveis?"}, {"t": "`ZonedDateTime`, `Instant` e horário de verão", "v": "8", "q": "Quantas horas tem o dia em que começa o horário de verão?"}, {"t": "`Period` e `Duration`", "v": "8", "q": "Qual dos dois aceita `LocalDate`?"}, {"t": "`DateTimeFormatter`", "v": "8", "q": "Qual é a diferença entre `MM` e `mm` num padrão?"}, {"t": "`Locale` e `ResourceBundle`", "v": "base", "q": "Em que ordem os bundles são procurados?"}, {"t": "`NumberFormat` e `MessageFormat`", "v": "base", "q": "Como formatar moeda de outro país sem mudar o `Locale` padrão?"}]}, {"nome": "I/O e NIO.2", "mod": "M13", "sem": "13", "topicos": [{"t": "`java.io`: bytes, caracteres e decorators", "v": "base", "q": "Qual é a diferença entre `InputStream` e `Reader`?"}, {"t": "`Console`", "v": "base", "q": "`System.console()` pode devolver `null`?"}, {"t": "Serialização e `transient`", "v": "base", "q": "Qual construtor roda na desserialização?"}, {"t": "`Path` e `Files`", "v": "base", "q": "`Path` representa um arquivo que já existe?"}, {"t": "`Files.lines`, `list`, `walk`, `find`", "v": "8", "q": "O stream de `Files.walk` precisa ser fechado?"}, {"t": "`Files.readString`, `writeString`, `Path.of`", "v": "11", "q": "Qual é a diferença entre `Path.of` e `Paths.get`?"}]}, {"nome": "Concorrência", "mod": "M14–M15", "sem": "14–15", "topicos": [{"t": "`Thread`, `Runnable`, `Callable`", "v": "base", "q": "Qual dos dois pode lançar checked exception e devolver valor?"}, {"t": "`ExecutorService`, `Future`, `shutdown`", "v": "base", "q": "O que acontece se esquecer o `shutdown`?"}, {"t": "`synchronized`, `volatile` e atômicos", "v": "base", "q": "`volatile` torna `i++` seguro?"}, {"t": "Locks: `ReentrantLock`, `ReadWriteLock`", "v": "base", "q": "`tryLock()` bloqueia a thread?"}, {"t": "Coleções concorrentes e `CopyOnWrite`", "v": "base", "q": "Quando `CopyOnWriteArrayList` é uma boa escolha?"}, {"t": "`CyclicBarrier` e `CountDownLatch`", "v": "base", "q": "Qual dos dois pode ser reutilizado?"}, {"t": "`CompletableFuture`", "v": "8", "q": "Em que thread roda um `thenApply`?"}, {"t": "Deadlock, livelock, starvation e race condition", "v": "base", "q": "Como diferenciar livelock de deadlock?"}]}, {"nome": "Módulos (JPMS)", "mod": "M16", "sem": "16", "topicos": [{"t": "`module-info`: `requires`, `exports`, `opens`", "v": "9", "q": "Qual é a diferença entre `exports` e `opens`?"}, {"t": "`requires transitive` e `requires static`", "v": "9", "q": "Quem enxerga um módulo lido com `requires transitive`?"}, {"t": "Serviços: `uses` e `provides`", "v": "9", "q": "Quem chama o `ServiceLoader`: quem usa ou quem provê?"}, {"t": "Módulos nomeados, automáticos e sem nome", "v": "9", "q": "Um módulo nomeado pode ler o módulo sem nome?"}, {"t": "Migração top-down e bottom-up", "v": "9", "q": "Em qual estratégia os JARs viram módulos automáticos primeiro?"}, {"t": "`jdeps`, `jlink`, `jmod`", "v": "9", "q": "Qual ferramenta encontra dependências de APIs internas do JDK?"}]}, {"nome": "JDBC, anotações e segurança", "mod": "M17", "sem": "17", "topicos": [{"t": "`DriverManager`, `Connection` e URL JDBC", "v": "base", "q": "Quais são as partes de uma URL JDBC?"}, {"t": "`PreparedStatement` e `CallableStatement`", "v": "base", "q": "Como o `PreparedStatement` ajuda contra SQL injection?"}, {"t": "`ResultSet` e transações", "v": "base", "q": "Em que índice começa a contagem de colunas do `ResultSet`?"}, {"t": "Criar anotações: `@Retention` e `@Target`", "v": "base", "q": "Quais são os tipos permitidos nos elementos de uma anotação?"}, {"t": "`@Repeatable` e anotações de tipo", "v": "8", "q": "O que é preciso declarar para repetir uma anotação?"}, {"t": "Anotações padrão: `@Override`, `@Deprecated`, `@SafeVarargs`...", "v": "base", "q": "Em que métodos `@SafeVarargs` é permitido?"}, {"t": "Secure coding: validação de entrada, injeção e DoS", "v": "base", "q": "Lista de permitidos ou lista de proibidos: qual é mais segura?"}, {"t": "Dados sensíveis, imutabilidade e serialização segura", "v": "base", "q": "Que informação nunca deve aparecer numa mensagem de exceção?"}]}];
+const CHAVE = "mapa-java-progresso-v1";
+let feito = {};
+try { feito = JSON.parse(localStorage.getItem(CHAVE) || "{}"); } catch (e) { feito = {}; }
+const salvar = () => { try { localStorage.setItem(CHAVE, JSON.stringify(feito)); } catch (e) {} };
+const esc = s => s.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const fmt = s => esc(s).replace(/`([^`]+)`/g, "<code>$1</code>");
+const rotulo = v => v === "base" ? "≤7" : "Java " + v;
+const classe = v => v === "8" ? "v8" : v === "base" ? "vold" : "vnew";
+const grupo = v => v === "8" ? "8" : v === "base" ? "base" : "novo";
+const N = DADOS.length;
+const hue = i => Math.round(i * 360 / N + 200) % 360;
+
+// Mapa radial
+const svg = document.getElementById("radial"), NS = "http://www.w3.org/2000/svg";
+const el = (n, a) => { const e = document.createElementNS(NS, n); for (const k in a) e.setAttribute(k, a[k]); return e; };
+const cx = 500, cy = 280, rx = 370, ry = 205;
+DADOS.forEach((r, i) => {
+  const ang = -Math.PI / 2 + i * 2 * Math.PI / N, x = cx + rx * Math.cos(ang), y = cy + ry * Math.sin(ang);
+  const cor = `hsl(${hue(i)} var(--S) var(--L))`;
+  svg.appendChild(el("line", { x1: cx, y1: cy, x2: x, y2: y, stroke: cor, "stroke-width": 2, opacity: .55 }));
+  const g = el("g", { class: "no", tabindex: 0, role: "button", "aria-label": r.nome });
+  const w = Math.max(150, r.nome.length * 7.4 + 24);
+  g.appendChild(el("rect", { x: x - w / 2, y: y - 22, width: w, height: 44, rx: 22, fill: "var(--surface)", stroke: cor, "stroke-width": 1.5 }));
+  const t1 = el("text", { x, y: y - 2, "text-anchor": "middle", "font-weight": 600 }); t1.textContent = r.nome;
+  const t2 = el("text", { x, y: y + 14, "text-anchor": "middle", "font-size": 11, fill: "var(--muted)" });
+  t2.textContent = `${r.mod} · ${r.topicos.length} tópicos`; t2.style.fill = "var(--muted)";
+  g.append(t1, t2);
+  const ir = () => { const c = document.getElementById("ramo-" + i); c.scrollIntoView({ behavior: "smooth", block: "start" });
+    c.classList.add("destaque"); setTimeout(() => c.classList.remove("destaque"), 1600); };
+  g.addEventListener("click", ir); g.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); ir(); } });
+  svg.appendChild(g);
+});
+svg.appendChild(el("circle", { cx, cy, r: 62, fill: "var(--text)" }));
+const tr = el("text", { x: cx, y: cy - 4, "text-anchor": "middle", "font-weight": 700, "font-size": 16 }); tr.textContent = "Java na prova"; tr.style.fill = "var(--bg)";
+const tr2 = el("text", { x: cx, y: cy + 16, "text-anchor": "middle", "font-size": 12 }); tr2.textContent = "1Z0-819 · base 8"; tr2.style.fill = "var(--bg)";
+svg.append(tr, tr2);
+
+// Cartões
+const grade = document.getElementById("grade");
+DADOS.forEach((r, i) => {
+  const sec = document.createElement("section");
+  sec.className = "ramo"; sec.id = "ramo-" + i; sec.style.setProperty("--h", hue(i));
+  sec.innerHTML = `<h2>${esc(r.nome)}</h2><div class="meta"><span>Módulo ${esc(r.mod)} · semana ${esc(r.sem)}</span><span class="cont"></span></div><ul></ul><p class="vazio" hidden>Nenhum tópico deste filtro neste ramo.</p>`;
+  const ul = sec.querySelector("ul");
+  r.topicos.forEach((t, j) => {
+    const id = i + "-" + j, li = document.createElement("li");
+    li.dataset.g = grupo(t.v);
+    li.innerHTML = `<label><input type="checkbox" data-id="${id}"><span class="t">${fmt(t.t)}</span><span class="v ${classe(t.v)}">${rotulo(t.v)}</span><span class="q">❓ ${fmt(t.q)}</span></label>`;
+    const cb = li.querySelector("input"); cb.checked = !!feito[id]; li.classList.toggle("feito", cb.checked);
+    cb.addEventListener("change", () => { feito[id] = cb.checked; if (!cb.checked) delete feito[id]; li.classList.toggle("feito", cb.checked); salvar(); placar(); });
+    ul.appendChild(li);
+  });
+  grade.appendChild(sec);
+});
+
+function placar() {
+  const todos = [...document.querySelectorAll("li")], ok = todos.filter(li => li.querySelector("input").checked).length;
+  document.getElementById("placar").textContent = `${ok} de ${todos.length} dominados`;
+  document.getElementById("barra").style.width = (100 * ok / todos.length) + "%";
+  document.querySelectorAll(".ramo").forEach(s => { const l = [...s.querySelectorAll("li")];
+    s.querySelector(".cont").textContent = `${l.filter(x => x.querySelector("input").checked).length}/${l.length}`; });
+}
+document.querySelectorAll(".chip").forEach(b => b.addEventListener("click", () => {
+  document.querySelectorAll(".chip").forEach(x => x.setAttribute("aria-pressed", x === b));
+  const f = b.dataset.f;
+  document.querySelectorAll(".ramo").forEach(s => { let vis = 0;
+    s.querySelectorAll("li").forEach(li => { const m = f === "todos" || li.dataset.g === f; li.hidden = !m; if (m) vis++; });
+    s.querySelector(".vazio").hidden = vis > 0; });
+}));
+placar();
+</script>
+</body>
+</html>
